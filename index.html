@@ -42,8 +42,8 @@
 
   <h2>Hantar WhatsApp</h2>
 
-  <label for="phone">Nombor Telefon (cth: 60123456789):</label>
-  <input type="tel" id="phone" placeholder="Masukkan nombor telefon">
+  <label for="phone">Nombor Telefon (cth: 0123456789):</label>
+  <input type="tel" id="phone" placeholder="Masukkan nombor telefon tanpa awalan +6">
 
   <label for="message">Mesej:</label>
   <textarea id="message" rows="4" placeholder="Tulis mesej anda di sini..."></textarea>
@@ -52,7 +52,7 @@
 
   <script>
     function sendWhatsApp() {
-      const phone = document.getElementById('phone').value.trim();
+      let phone = document.getElementById('phone').value.trim();
       const message = encodeURIComponent(document.getElementById('message').value.trim());
 
       if (!phone) {
@@ -60,8 +60,14 @@
         return;
       }
 
+      // Buang sifar di depan kalau ada, dan tambah '6'
+      if (phone.startsWith('0')) {
+        phone = phone.substring(1); // buang '0'
+      }
+      phone = '6' + phone;
+
       const url = `https://wa.me/${phone}?text=${message}`;
-      window.location.href = url; // Buka dalam tab sama (lebih sesuai untuk iOS)
+      window.location.href = url;
     }
   </script>
 
