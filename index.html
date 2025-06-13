@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hantar WhatsApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    h2 {
+      text-align: center;
+      color: #25D366;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      background-color: #25D366;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1da851;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Hantar WhatsApp</h2>
+
+  <label for="phone">Nombor Telefon (cth: 60123456789):</label>
+  <input type="tel" id="phone" placeholder="Masukkan nombor telefon">
+
+  <label for="message">Mesej:</label>
+  <textarea id="message" rows="4" placeholder="Tulis mesej anda di sini..."></textarea>
+
+  <button onclick="sendWhatsApp()">Hantar ke WhatsApp</button>
+
+  <script>
+    function sendWhatsApp() {
+      const phone = document.getElementById('phone').value.trim();
+      const message = encodeURIComponent(document.getElementById('message').value.trim());
+
+      if (!phone) {
+        alert('Sila masukkan nombor telefon.');
+        return;
+      }
+
+      const url = `https://wa.me/${phone}?text=${message}`;
+      window.location.href = url; // Buka dalam tab sama (lebih sesuai untuk iOS)
+    }
+  </script>
+
+</body>
+</html>
