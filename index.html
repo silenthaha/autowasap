@@ -14,7 +14,7 @@
       text-align: center;
       color: #25D366;
     }
-    input, textarea {
+    select, input, textarea {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
@@ -45,12 +45,26 @@
   <label for="phone">Nombor Telefon (cth: 0123456789):</label>
   <input type="tel" id="phone" placeholder="Masukkan nombor telefon seperti 0123456789">
 
-  <label for="message">Mesej:</label>
-  <textarea id="message" rows="4" placeholder="Tulis mesej anda di sini..."></textarea>
+  <label for="preset">Pilih mesej standard:</label>
+  <select id="preset" onchange="updateMessage()">
+    <option value="">-- Tiada --</option>
+    <option value="Saya sudah sampai En./Pn.">Saya sudah sampai En./Pn.</option>
+    <option value="Boleh saya letak barang disini">Boleh saya letak barang di sini</option>
+    <option value="Barang telah selamat saya hantar kepada anda 🚚📦. Terima kasih atas kepercayaan 😊. Kalau anda berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan anda amat saya hargai 🙏✨.">Barang telah selamat dihantar...</option>
+  </select>
+
+  <label for="message">Atau tambah mesej anda:</label>
+  <textarea id="message" rows="4" placeholder="Tulis mesej tambahan di sini (jika ada)..."></textarea>
 
   <button onclick="sendWhatsApp()">Hantar ke WhatsApp</button>
 
   <script>
+    function updateMessage() {
+      const preset = document.getElementById('preset').value;
+      const messageBox = document.getElementById('message');
+      messageBox.value = preset; // ganti isi textarea dengan mesej dipilih
+    }
+
     function sendWhatsApp() {
       const phoneInput = document.getElementById('phone').value.trim();
       const message = encodeURIComponent(document.getElementById('message').value.trim());
@@ -60,9 +74,7 @@
         return;
       }
 
-      // Kekalkan nombor seperti ditaip, dan tambah '6' di hadapan
       const fullPhone = '6' + phoneInput;
-
       const url = `https://wa.me/${fullPhone}?text=${message}`;
       window.location.href = url;
     }
