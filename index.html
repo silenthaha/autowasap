@@ -70,8 +70,8 @@
     }
 
     function sanitizePhoneNumber(rawPhone) {
-      let phone = rawPhone.replace(/\s+/g, ''); // buang semua space
-      phone = phone.replace(/^\+?6?0/, '0');     // tukar +60, 60, atau 6 ke 0 di depan
+      let phone = rawPhone.replace(/\s+/g, '');         // buang semua space
+      phone = phone.replace(/^(\+?6|60)/, '0');          // ganti +6, 6, atau 60 di depan → 0
       return phone;
     }
 
