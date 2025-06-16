@@ -42,7 +42,7 @@
 
   <h2>Hantar WhatsApp</h2>
 
-  <label for="phone">Nombor Telefon (cth: +60 12 345 6789 atau 0123456789):</label>
+  <label for="phone">Nombor Telefon (cth: +60 17 372 1450):</label>
   <input type="tel" id="phone" placeholder="Tampal atau taip nombor telefon">
 
   <label for="preset">Pilih mesej standard:</label>
@@ -65,8 +65,7 @@
   <script>
     function updateMessage() {
       const preset = document.getElementById('preset').value;
-      const messageBox = document.getElementById('message');
-      messageBox.value = preset;
+      document.getElementById('message').value = preset;
     }
 
     function sanitizePhoneNumber(rawPhone) {
@@ -84,8 +83,8 @@
         return;
       }
 
-      const sanitizedPhone = sanitizePhoneNumber(rawPhone); // contoh: +60 12 3456789 → 0123456789
-      const waPhone = '6' + sanitizedPhone.substring(1);    // convert: 0123456789 → 60123456789
+      const phone = sanitizePhoneNumber(rawPhone);        // Output: 0173721450
+      const waPhone = '6' + phone.substring(1);           // Jadi 60173721450 untuk WhatsApp API
 
       const url = `https://wa.me/${waPhone}?text=${message}`;
       window.location.href = url;
