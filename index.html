@@ -8,26 +8,25 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f8f8f8;
+      background-color: #f0f0f0;
     }
     h2 {
       text-align: center;
       color: #25D366;
     }
-    select, input, textarea {
+    input, select, textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
+      font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      box-sizing: border-box;
-      font-size: 16px;
     }
     button {
+      width: 100%;
+      padding: 14px;
       background-color: #25D366;
       color: white;
-      padding: 12px;
-      width: 100%;
       font-size: 18px;
       border: none;
       border-radius: 8px;
@@ -42,8 +41,8 @@
 
   <h2>Hantar WhatsApp</h2>
 
-  <label for="phone">Nombor Telefon (cth: +60 17 372 1450 atau 0173721450):</label>
-  <input type="tel" id="phone" placeholder="Tampal atau taip nombor telefon">
+  <label for="phone">Nombor Telefon:</label>
+  <input type="tel" id="phone" placeholder="Contoh: +60173721450 atau 0173721450">
 
   <label for="preset">Pilih mesej standard:</label>
   <select id="preset" onchange="updateMessage()">
@@ -57,40 +56,45 @@
     <option value="Saya lalamove. Mohon maaf atas kelewatan penghantaran tadi 🙏. Terdapat sedikit kesulitan yang tidak dapat dielakkan di jalan raya. Namun, barang telah selamat dihantar kepada pihak tuan/puan 🚚📦. Terima kasih atas kesabaran dan pemahaman yang diberikan.">Mohon maaf atas kelewatan penghantaran tadi</option>
   </select>
 
-  <label for="message">Atau tambah mesej anda:</label>
-  <textarea id="message" rows="4" placeholder="Tulis mesej tambahan di sini (jika ada)..."></textarea>
+  <label for="message">Atau mesej tersuai:</label>
+  <textarea id="message" rows="4" placeholder="Tulis mesej tambahan di sini..."></textarea>
 
   <button onclick="sendWhatsApp()">Hantar ke WhatsApp</button>
 
   <script>
     function updateMessage() {
-      const preset = document.getElementById('preset').value;
-      document.getElementById('message').value = preset;
+      const preset = document.getElementById("preset").value;
+      document.getElementById("message").value = preset;
     }
 
     function sanitizePhoneNumber(rawPhone) {
-      let phone = rawPhone.replace(/\s+/g, '');         // buang space
-      phone = phone.replace(/^(\+?60)/, '0');            // tukar +60 atau 60 → 0
-      phone = phone.replace(/[^0-9]/g, '');              // buang semua selain nombor
+      let phone = rawPhone.replace(/\D/g, ''); // buang semua bukan nombor
+
+      // Jika bermula dengan 60, tukar kepada 0
+      if (phone.startsWith('60')) {
+        phone = '0' + phone.substring(2);
+      }
+
+      // Jika bermula dengan 1, tambah 0
+      if (phone.startsWith('1') && phone.length >= 9) {
+        phone = '0' + phone;
+      }
+
       return phone;
     }
 
     function sendWhatsApp() {
       const rawPhone = document.getElementById('phone').value.trim();
+      const localPhone = sanitizePhoneNumber(rawPhone); // 0173721450
       const message = encodeURIComponent(document.getElementById('message').value.trim());
 
-      if (!rawPhone) {
-        alert('Sila masukkan nombor telefon.');
-        return;
-      }
-
-      const localPhone = sanitizePhoneNumber(rawPhone);      // Contoh: 0173721450
+      // Validation
       if (!/^0\d{8,9}$/.test(localPhone)) {
-        alert("Nombor telefon tidak sah. Pastikan bermula dengan 0 dan mempunyai 9 atau 10 digit.");
+        alert("Nombor telefon tidak sah. Sila semak semula.");
         return;
       }
 
-      const waPhone = '6' + localPhone.substring(1);         // Jadi: 60173721450
+      const waPhone = '6' + localPhone.substring(1); // jadi 60173721450
       const url = `https://wa.me/${waPhone}?text=${message}`;
       window.location.href = url;
     }
