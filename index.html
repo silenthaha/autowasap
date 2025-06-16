@@ -1,63 +1,266 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hantar WhatsApp</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Sender | Hantar Mesej Mudah</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
-      background-color: #f0f0f0;
+      color: #333;
     }
-    h2 {
+    
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: #128C7E;
+      padding: 30px 20px;
       text-align: center;
-      color: #25D366;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #25D366;
+      position: relative;
       color: white;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
     }
-    button:hover {
-      background-color: #1da851;
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .logo {
+      font-size: 3rem;
+      color: white;
+      animation: pulse 2s infinite;
+    }
+    
+    .form-container {
+      padding: 30px;
+    }
+    
+    .input-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #075E54;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .input-group input, 
+    .input-group select, 
+    .input-group textarea {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: #f9f9f9;
+    }
+    
+    .input-group input:focus, 
+    .input-group select:focus, 
+    .input-group textarea:focus {
+      border-color: #25D366;
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+      background: white;
+      outline: none;
+    }
+    
+    .input-group input::placeholder {
+      color: #999;
+    }
+    
+    .preset-container {
+      background: #e8f5e9;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 5px;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .message-box {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .btn-send {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(to right, #25D366, #128C7E);
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .btn-send:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+      background: linear-gradient(to right, #2be46f, #139f81);
+    }
+    
+    .btn-send:active {
+      transform: translateY(1px);
+    }
+    
+    .examples {
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 25px;
+      border-left: 4px solid #128C7E;
+    }
+    
+    .examples h3 {
+      color: #128C7E;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .examples ul {
+      padding-left: 20px;
+    }
+    
+    .examples li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+      background: #f9f9f9;
+    }
+    
+    .footer a {
+      color: #128C7E;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .form-container {
+        padding: 20px;
+      }
+      
+      .btn-send {
+        padding: 15px;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
-
-  <h2>Hantar WhatsApp</h2>
-
-  <label for="phone">Nombor Telefon:</label>
-  <input type="tel" id="phone" placeholder="Contoh: +60123456789 atau 0123456789" />
-
-  <label for="preset">Pilih mesej standard:</label>
-  <select id="preset" onchange="updateMessage()">
-    <option value="">-- Tiada --</option>
-    <option value="Saya sudah sampai En./Pn.">Saya sudah sampai En./Pn.</option>
-    <option value="Boleh saya letak barang di sini">Boleh saya letak barang di sini</option>
-    <option value="Barang telah selamat saya hantar kepada anda 🚚📦. Terima kasih atas kepercayaan 😊. Kalau anda berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan anda amat saya hargai 🙏✨.">
-      Barang telah selamat dihantar...
-    </option>
-  </select>
-
-  <label for="message">Atau mesej tersuai:</label>
-  <textarea id="message" rows="4" placeholder="Tulis mesej tambahan di sini..."></textarea>
-
-  <button onclick="sendWhatsApp()">Hantar ke WhatsApp</button>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fab fa-whatsapp logo"></i> WhatsApp Sender</h1>
+      <p>Hantar mesej terus ke WhatsApp dengan mudah!</p>
+    </div>
+    
+    <div class="form-container">
+      <div class="input-group">
+        <label for="phone"><i class="fas fa-phone-alt"></i> Nombor Telefon:</label>
+        <input type="tel" id="phone" placeholder="Contoh: +60123456789 atau 0123456789">
+      </div>
+      
+      <div class="input-group">
+        <label for="preset"><i class="fas fa-comment-alt"></i> Pilih mesej standard:</label>
+        <select id="preset" onchange="updateMessage()">
+          <option value="">-- Pilih satu mesej --</option>
+          <option value="Saya sudah sampai En./Pn.">Saya sudah sampai En./Pn.</option>
+          <option value="Boleh saya letak barang di sini">Boleh saya letak barang di sini</option>
+          <option value="Barang telah selamat saya hantar kepada anda 🚚📦. Terima kasih atas kepercayaan 😊. Kalau anda berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan anda amat saya hargai 🙏✨.">
+            Barang telah selamat dihantar...
+          </option>
+          <option value="Assalamualaikum En./Pn., saya nak sahkan tarikh dan masa penghantaran. Adakah sesuai pada hari ini?">Sahkan tarikh penghantaran</option>
+          <option value="Terima kasih kerana membuat pesanan dengan kami! 🎉 Pesanan anda sedang diproses.">Pengesahan pesanan</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label for="message"><i class="fas fa-edit"></i> Atau tulis mesej anda:</label>
+        <textarea id="message" rows="5" class="message-box" placeholder="Tulis mesej anda di sini..."></textarea>
+      </div>
+      
+      <button class="btn-send" onclick="sendWhatsApp()">
+        <i class="fab fa-whatsapp"></i> HANTAR KE WHATSAPP
+      </button>
+      
+      <div class="examples">
+        <h3><i class="fas fa-lightbulb"></i> Contoh Nombor Telefon:</h3>
+        <ul>
+          <li>+60123456789</li>
+          <li>60123456789</li>
+          <li>012-345 6789</li>
+          <li>012 3456 789</li>
+          <li>0123456789</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>Dibangunkan dengan ❤️ untuk rakyat Malaysia | © 2023 WhatsApp Sender</p>
+    </div>
+  </div>
 
   <script>
     function updateMessage() {
@@ -68,8 +271,8 @@
     function sanitizePhoneNumber(rawPhone) {
       // Buang semua selain nombor
       let phone = rawPhone.replace(/\D/g, '');
-
-      // Penanganan khusus untuk format +60
+      
+      // Jika bermula dengan '60' → tukar ke '0'
       if (phone.startsWith('60')) {
         phone = '0' + phone.slice(2);
       }
@@ -77,29 +280,40 @@
       else if (phone.startsWith('1') && phone.length >= 9) {
         phone = '0' + phone;
       }
-
+      
       return phone;
     }
 
     function sendWhatsApp() {
       const rawPhone = document.getElementById("phone").value.trim();
-      const message = encodeURIComponent(document.getElementById("message").value.trim());
-      const localPhone = sanitizePhoneNumber(rawPhone);
-
-      // Validasi nombor Malaysia (9-10 digit setelah 0)
-      if (!/^0\d{9,10}$/.test(localPhone)) {
-        alert("Nombor telefon tidak sah. Sila semak semula.");
+      const message = document.getElementById("message").value.trim();
+      
+      if (!rawPhone) {
+        alert("Sila masukkan nombor telefon!");
         return;
       }
-
-      // Format WhatsApp: 60 + tanpa 0 → contoh: 60173721450
+      
+      if (!message) {
+        alert("Sila masukkan mesej!");
+        return;
+      }
+      
+      const localPhone = sanitizePhoneNumber(rawPhone);
+      
+      // Validasi nombor Malaysia
+      if (!/^0\d{8,9}$/.test(localPhone)) {
+        alert("Nombor telefon tidak sah. Sila semak format nombor.");
+        return;
+      }
+      
+      // Format WhatsApp: 6 + tanpa 0 → contoh: 60173721450
       const waPhone = '60' + localPhone.slice(1);
-      const url = `https://wa.me/${waPhone}?text=${message}`;
-
+      const encodedMessage = encodeURIComponent(message);
+      const url = `https://wa.me/${waPhone}?text=${encodedMessage}`;
+      
       // Pergi ke WhatsApp
-      window.location.href = url;
+      window.open(url, '_blank');
     }
   </script>
-
 </body>
 </html>
