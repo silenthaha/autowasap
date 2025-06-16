@@ -42,18 +42,19 @@
 
   <h2>Hantar WhatsApp</h2>
 
-  <label for="phone">Nombor Telefon (cth: 0123456789):</label>
-  <input type="tel" id="phone" placeholder="Masukkan nombor telefon">
+  <label for="phone">Nombor Telefon (cth: +60 12 345 6789 atau 0123456789):</label>
+  <input type="tel" id="phone" placeholder="Tampal atau taip nombor telefon">
 
   <label for="preset">Pilih mesej standard:</label>
   <select id="preset" onchange="updateMessage()">
     <option value="">-- Tiada --</option>
-    <option value="Saya sudah sampai tuan/puan">Saya sudah sampai tuan/puan</option>
-    <option value="Ok tuan/puan, saya dalam perjalanan ke lokasi ya 🚗😊. Nanti bila saya dah hampir sampai, saya akan maklumkan. Terima kasih atas kerjasama!">Ok tuan/puan, saya dalam perjalanan ke lokasi ya</option>
+    <option value="Saya lalamove, saya sudah sampai tuan/puan">Saya sudah sampai tuan/puan</option>
+    <option value="Saya lalamove, saya dalam perjalanan ke lokasi ya 🚗😊. Nanti bila saya dah hampir sampai, saya akan maklumkan. Terima kasih atas kerjasama!">Ok tuan/puan, saya dalam perjalanan ke lokasi ya</option>
+    <option value="Saya lalamove, saya akan sampai dalam 10 minit lagi😊">Saya akan sampai dalam 10 minit lagi😊</option>
+    <option value="Saya lalamove, saya akan sampai dalam 5 minit lagi😊">Saya akan sampai dalam 5 minit lagi😊</option>
     <option value="Boleh saya letak barang disini">Boleh saya letak barang di sini</option>
     <option value="Barang telah selamat saya hantar kepada anda tuan/puan 🚚📦. Terima kasih atas kepercayaan 😊. Kalau tuan/puan berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan tuan/puan amat saya hargai 🙏✨.">Barang telah selamat dihantar...</option>
-    <option value="Saya akan sampai dalam 10 minit lagi😊">Saya akan sampai dalam 10 minit lagi😊</option>
-    <option value="Mohon maaf atas kelewatan penghantaran tadi 🙏. Terdapat sedikit kesulitan yang tidak dapat dielakkan di jalan raya. Namun, barang telah selamat dihantar kepada pihak tuan/puan 🚚📦. Terima kasih atas kesabaran dan pemahaman yang diberikan.">Mohon maaf atas kelewatan penghantaran tadi</option>
+    <option value="Saya lalamove. Mohon maaf atas kelewatan penghantaran tadi 🙏. Terdapat sedikit kesulitan yang tidak dapat dielakkan di jalan raya. Namun, barang telah selamat dihantar kepada pihak tuan/puan 🚚📦. Terima kasih atas kesabaran dan pemahaman yang diberikan.">Mohon maaf atas kelewatan penghantaran tadi</option>
   </select>
 
   <label for="message">Atau tambah mesej anda:</label>
@@ -65,20 +66,28 @@
     function updateMessage() {
       const preset = document.getElementById('preset').value;
       const messageBox = document.getElementById('message');
-      messageBox.value = preset; // ganti isi textarea dengan mesej dipilih
+      messageBox.value = preset;
+    }
+
+    function sanitizePhoneNumber(rawPhone) {
+      let phone = rawPhone.replace(/\s+/g, ''); // buang semua space
+      phone = phone.replace(/^\+?6?0/, '0');     // tukar +60, 60, atau 6 ke 0 di depan
+      return phone;
     }
 
     function sendWhatsApp() {
-      const phoneInput = document.getElementById('phone').value.trim();
+      const rawPhone = document.getElementById('phone').value.trim();
       const message = encodeURIComponent(document.getElementById('message').value.trim());
 
-      if (!phoneInput) {
+      if (!rawPhone) {
         alert('Sila masukkan nombor telefon.');
         return;
       }
 
-      const fullPhone = '6' + phoneInput;
-      const url = `https://wa.me/${fullPhone}?text=${message}`;
+      const sanitizedPhone = sanitizePhoneNumber(rawPhone); // contoh: +60 12 3456789 → 0123456789
+      const waPhone = '6' + sanitizedPhone.substring(1);    // convert: 0123456789 → 60123456789
+
+      const url = `https://wa.me/${waPhone}?text=${message}`;
       window.location.href = url;
     }
   </script>
