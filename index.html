@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hantar WhatsApp</title>
   <style>
     body {
@@ -42,14 +42,16 @@
   <h2>Hantar WhatsApp</h2>
 
   <label for="phone">Nombor Telefon:</label>
-  <input type="tel" id="phone" placeholder="Contoh: +60173721450 atau 0173721450">
+  <input type="tel" id="phone" placeholder="Contoh: +60173721450 atau 0173721450" />
 
   <label for="preset">Pilih mesej standard:</label>
   <select id="preset" onchange="updateMessage()">
     <option value="">-- Tiada --</option>
     <option value="Saya sudah sampai En./Pn.">Saya sudah sampai En./Pn.</option>
     <option value="Boleh saya letak barang di sini">Boleh saya letak barang di sini</option>
-    <option value="Barang telah selamat saya hantar kepada anda 🚚📦. Terima kasih atas kepercayaan 😊. Kalau anda berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan anda amat saya hargai 🙏✨.">Barang telah selamat dihantar...</option>
+    <option value="Barang telah selamat saya hantar kepada anda 🚚📦. Terima kasih atas kepercayaan 😊. Kalau anda berpuas hati dengan servis saya, jangan lupa bagi saya 5 ⭐ ya! Sokongan anda amat saya hargai 🙏✨.">
+      Barang telah selamat dihantar...
+    </option>
   </select>
 
   <label for="message">Atau mesej tersuai:</label>
@@ -64,14 +66,15 @@
     }
 
     function sanitizePhoneNumber(rawPhone) {
-      let phone = rawPhone.replace(/\D/g, ''); // buang semua bukan nombor
+      // Buang semua selain nombor
+      let phone = rawPhone.replace(/\D/g, '');
 
-      // Jika bermula dengan 60, tukar kepada 0
+      // Jika bermula dengan '60' → tukar ke '0'
       if (phone.startsWith('60')) {
-        phone = '0' + phone.substring(2);
+        phone = '0' + phone.slice(2);
       }
 
-      // Jika bermula dengan 1, tambah 0
+      // Jika bermula dengan '1' (mungkin user lupa letak 0)
       if (phone.startsWith('1') && phone.length >= 9) {
         phone = '0' + phone;
       }
@@ -80,18 +83,21 @@
     }
 
     function sendWhatsApp() {
-      const rawPhone = document.getElementById('phone').value.trim();
-      const localPhone = sanitizePhoneNumber(rawPhone); // 0173721450
-      const message = encodeURIComponent(document.getElementById('message').value.trim());
+      const rawPhone = document.getElementById("phone").value.trim();
+      const message = encodeURIComponent(document.getElementById("message").value.trim());
+      const localPhone = sanitizePhoneNumber(rawPhone); // Contoh: 0173721450
 
-      // Validation
+      // Validasi nombor Malaysia
       if (!/^0\d{8,9}$/.test(localPhone)) {
         alert("Nombor telefon tidak sah. Sila semak semula.");
         return;
       }
 
-      const waPhone = '6' + localPhone.substring(1); // jadi 60173721450
+      // Format WhatsApp: 6 + tanpa 0 → contoh: 60173721450
+      const waPhone = '6' + localPhone.slice(1);
       const url = `https://wa.me/${waPhone}?text=${message}`;
+
+      // Pergi ke WhatsApp
       window.location.href = url;
     }
   </script>
