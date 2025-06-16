@@ -42,7 +42,7 @@
 
   <h2>Hantar WhatsApp</h2>
 
-  <label for="phone">Nombor Telefon (cth: +60 17 372 1450):</label>
+  <label for="phone">Nombor Telefon (cth: +60 17 372 1450 atau 0173721450):</label>
   <input type="tel" id="phone" placeholder="Tampal atau taip nombor telefon">
 
   <label for="preset">Pilih mesej standard:</label>
@@ -69,8 +69,9 @@
     }
 
     function sanitizePhoneNumber(rawPhone) {
-      let phone = rawPhone.replace(/\s+/g, '');         // buang semua space
-      phone = phone.replace(/^(\+?6|60)/, '0');          // ganti +6, 6, atau 60 di depan → 0
+      let phone = rawPhone.replace(/\s+/g, '');         // buang space
+      phone = phone.replace(/^(\+?60)/, '0');            // tukar +60 atau 60 → 0
+      phone = phone.replace(/[^0-9]/g, '');              // buang semua selain nombor
       return phone;
     }
 
@@ -83,9 +84,13 @@
         return;
       }
 
-      const phone = sanitizePhoneNumber(rawPhone);        // Output: 0173721450
-      const waPhone = '6' + phone.substring(1);           // Jadi 60173721450 untuk WhatsApp API
+      const localPhone = sanitizePhoneNumber(rawPhone);      // Contoh: 0173721450
+      if (!/^0\d{8,9}$/.test(localPhone)) {
+        alert("Nombor telefon tidak sah. Pastikan bermula dengan 0 dan mempunyai 9 atau 10 digit.");
+        return;
+      }
 
+      const waPhone = '6' + localPhone.substring(1);         // Jadi: 60173721450
       const url = `https://wa.me/${waPhone}?text=${message}`;
       window.location.href = url;
     }
