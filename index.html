@@ -42,7 +42,7 @@
   <h2>Hantar WhatsApp</h2>
 
   <label for="phone">Nombor Telefon:</label>
-  <input type="tel" id="phone" placeholder="Contoh: +60173721450 atau 0173721450" />
+  <input type="tel" id="phone" placeholder="Contoh: +60123456789 atau 0123456789" />
 
   <label for="preset">Pilih mesej standard:</label>
   <select id="preset" onchange="updateMessage()">
@@ -69,13 +69,12 @@
       // Buang semua selain nombor
       let phone = rawPhone.replace(/\D/g, '');
 
-      // Jika bermula dengan '60' → tukar ke '0'
+      // Penanganan khusus untuk format +60
       if (phone.startsWith('60')) {
         phone = '0' + phone.slice(2);
       }
-
       // Jika bermula dengan '1' (mungkin user lupa letak 0)
-      if (phone.startsWith('1') && phone.length >= 9) {
+      else if (phone.startsWith('1') && phone.length >= 9) {
         phone = '0' + phone;
       }
 
@@ -85,16 +84,16 @@
     function sendWhatsApp() {
       const rawPhone = document.getElementById("phone").value.trim();
       const message = encodeURIComponent(document.getElementById("message").value.trim());
-      const localPhone = sanitizePhoneNumber(rawPhone); // Contoh: 0173721450
+      const localPhone = sanitizePhoneNumber(rawPhone);
 
-      // Validasi nombor Malaysia
-      if (!/^0\d{8,9}$/.test(localPhone)) {
+      // Validasi nombor Malaysia (9-10 digit setelah 0)
+      if (!/^0\d{9,10}$/.test(localPhone)) {
         alert("Nombor telefon tidak sah. Sila semak semula.");
         return;
       }
 
-      // Format WhatsApp: 6 + tanpa 0 → contoh: 60173721450
-      const waPhone = '6' + localPhone.slice(1);
+      // Format WhatsApp: 60 + tanpa 0 → contoh: 60173721450
+      const waPhone = '60' + localPhone.slice(1);
       const url = `https://wa.me/${waPhone}?text=${message}`;
 
       // Pergi ke WhatsApp
