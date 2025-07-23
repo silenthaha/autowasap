@@ -2,7 +2,10 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="HandheldFriendly" content="true">
   <title>WhatsApp Sender | Hantar Mesej Mudah</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -11,6 +14,7 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
     
     body {
@@ -21,6 +25,8 @@
       align-items: center;
       padding: 15px;
       color: #333;
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
     }
     
     .container {
@@ -90,6 +96,7 @@
       border-radius: 10px;
       transition: all 0.3s ease;
       background: #f9f9f9;
+      -webkit-appearance: none;
     }
     
     .input-group input:focus, 
@@ -136,6 +143,8 @@
       align-items: center;
       gap: 8px;
       margin-top: 10px;
+      -webkit-user-select: none;
+      user-select: none;
     }
     
     .btn-send:hover {
@@ -146,33 +155,6 @@
     
     .btn-send:active {
       transform: translateY(1px);
-    }
-    
-    .examples {
-      background: #f5f5f5;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 20px;
-      border-left: 4px solid #128C7E;
-      font-size: 0.85rem;
-    }
-    
-    .examples h3 {
-      color: #128C7E;
-      margin-bottom: 10px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .examples ul {
-      padding-left: 20px;
-    }
-    
-    .examples li {
-      margin-bottom: 8px;
-      line-height: 1.4;
     }
     
     .footer {
@@ -213,6 +195,18 @@
       .header {
         padding: 15px 10px;
       }
+      
+      /* Prevent zoom on input focus */
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+    }
+    
+    /* For iOS devices */
+    @supports (-webkit-touch-callout: none) {
+      input, select, textarea {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -226,7 +220,7 @@
     <div class="form-container">
       <div class="input-group">
         <label for="phone"><i class="fas fa-mobile-alt"></i> Nombor Telefon:</label>
-        <input type="tel" id="phone" placeholder="Contoh: +60123456789 atau 0123456789">
+        <input type="tel" id="phone" placeholder="Contoh: +60123456789 atau 0123456789" inputmode="tel">
       </div>
       
       <div class="input-group">
@@ -245,23 +239,13 @@
       
       <div class="input-group">
         <label for="message"><i class="fas fa-edit"></i> Mesej Tersuai:</label>
-        <textarea id="message" rows="4" class="message-box" placeholder="Tulis mesej anda di sini..."></textarea>
+        <textarea id="message" rows="4" class="message-box" placeholder="Tulis mesej anda di sini..." inputmode="text"></textarea>
       </div>
       
       <button class="btn-send" onclick="sendWhatsApp()">
         <i class="fab fa-whatsapp"></i> HANTAR KE WHATSAPP
       </button>
       
-      <div class="examples">
-        <h3><i class="fas fa-lightbulb"></i> Contoh Nombor:</h3>
-        <ul>
-          <li>+60123456789</li>
-          <li>60123456789</li>
-          <li>012-345 6789</li>
-          <li>012 3456 789</li>
-          <li>0123456789</li>
-        </ul>
-      </div>
     </div>
     
     <div class="footer">
@@ -307,11 +291,6 @@
       
       const localPhone = sanitizePhoneNumber(rawPhone);
       
-      // Validasi nombor Malaysia
-      // if (!/^0\d{8,9}$/.test(localPhone)) {
-      //   alert("Nombor telefon tidak sah. Sila semak format nombor.");
-      //   return;
-      // }
       
       // Format WhatsApp: 60 + tanpa 0 → contoh: 60173721450
       const waPhone = '60' + localPhone.slice(1);
@@ -321,6 +300,13 @@
       // Pergi ke WhatsApp
       window.open(url, '_blank');
     }
+    
+    // Prevent form submission on Enter key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+        e.preventDefault();
+      }
+    });
   </script>
 </body>
 </html>
